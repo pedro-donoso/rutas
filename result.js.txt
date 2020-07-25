@@ -1,0 +1,20 @@
+const express = require('express');
+const router = express.Router();
+const request = require('request');
+router.get('/', function(req, res, next) {
+	const description = req.query.description;
+	const location = req.query.location;
+	const baseUrl = "https://jobs.github.com/positions.json?description=" + description + "&location=" + location + "&full_time=true";
+	request(baseUrl, function(error, response, body) {
+		if (!error) {
+			if (response.statusCode == 200) {
+				var serializedResponse = JSON.parse(body);
+				res.render("result", {data: serializedResponse});
+			}
+		
+		}
+		
+	});
+});
+
+module.exports = router;
